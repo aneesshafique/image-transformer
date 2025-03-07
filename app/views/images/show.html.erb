@@ -1,0 +1,14 @@
+<h1>Image Details</h1>
+<p>File: <%= image_tag @image.file %></p>
+
+<%= link_to "Convert to Black and White", convert_to_bw_image_path(@image), class: "action-link" %><br>
+<%= link_to "Convert to PNG", convert_to_png_image_path(@image), class: "action-link" %><br>
+
+<%= form_with url: compress_image_path(@image), method: :get, id: 'compress-form', data: { controller: 'image', action: 'submit->image#handleSubmit' } do |form| %>
+  <div class="form-group">
+    <%= form.label :quality, "Compression Quality (1-100):" %>
+    <%= form.number_field :quality, in: 1..100, step: 1, id: 'quality-input', data: { image_target: 'qualityInput' }, class: "form-control", required: true %>
+  </div>
+  <%= form.hidden_field :image_id, value: @image.id, id: 'image-id', data: { image_target: 'imageId' } %>
+  <%= form.submit "Compress Image", class: "btn btn-primary" %>
+<% end %>
